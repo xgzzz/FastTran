@@ -73,9 +73,9 @@ jobs:
           - os: ubuntu-22.04
             asset: linux-x86_64
             archive: fasttran-linux-x86_64.tar.gz
-          - os: macos-13
-            asset: macos-x86_64
-            archive: fasttran-macos-x86_64.tar.gz
+          - os: macos-15
+            asset: macos-arm64
+            archive: fasttran-macos-arm64.tar.gz
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
