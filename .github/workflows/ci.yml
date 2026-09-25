@@ -137,7 +137,7 @@ jobs:
           tar -czf '${{ matrix.archive }}' -C release/package .
 
       - name: Upload desktop artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: desktop-${{ matrix.asset }}
           path: ${{ matrix.archive }}
@@ -202,7 +202,7 @@ jobs:
         run: cargo apk2 build --lib
 
       - name: Upload Android debug artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android-debug-${{ github.sha }}
           path: target/debug/apk/FastTran.apk
