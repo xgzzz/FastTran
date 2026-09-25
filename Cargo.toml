@@ -1,0 +1,94 @@
+[package]
+name = "fasttran"
+version = "0.1.0"
+edition = "2024"
+description = "A fast, native LAN file transfer application built with Rust"
+authors = ["FastTran contributors"]
+license = "MIT"
+keywords = ["file-transfer", "lan", "p2p", "rust", "egui"]
+categories = ["network-programming"]
+
+[lib]
+name = "fasttran_core"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+anyhow = "1.0"
+directories = "6.0"
+if-addrs = "0.13"
+open = "5.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+thiserror = "2.0"
+tokio = { version = "1.47", features = ["fs", "io-util", "macros", "net", "rt-multi-thread", "sync", "time"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+uuid = { version = "1.17", features = ["serde", "v4"] }
+
+[target.'cfg(not(target_os = "android"))'.dependencies]
+eframe = { version = "0.36.2", default-features = false, features = ["default_fonts", "glow", "wayland", "x11"] }
+rfd = "0.17"
+
+[target.'cfg(target_os = "android")'.dependencies]
+android-activity = { version = "0.6.1", features = ["native-activity"] }
+eframe = { version = "0.36.2", default-features = false, features = ["android-native-activity", "default_fonts", "glow"] }
+jni = "0.22.4"
+
+[dev-dependencies]
+tempfile = "3.20"
+
+[package.metadata.android]
+package = "io.fasttran.app"
+apk_name = "FastTran"
+use_aapt2 = true
+strip = "strip"
+include_cplusplus_shared = true
+java_sources = "android/java"
+manifest_override = "android/AndroidManifest.xml"
+resources = "android/resources"
+build_targets = ["aarch64-linux-android", "armv7-linux-androideabi", "x86_64-linux-android"]
+
+[package.metadata.android.sdk]
+min_sdk_version = 24
+target_sdk_version = 36
+
+[[package.metadata.android.uses_permission]]
+name = "android.permission.INTERNET"
+
+[[package.metadata.android.uses_permission]]
+name = "android.permission.ACCESS_NETWORK_STATE"
+
+[[package.metadata.android.uses_permission]]
+name = "android.permission.ACCESS_WIFI_STATE"
+
+[[package.metadata.android.uses_permission]]
+name = "android.permission.CHANGE_WIFI_MULTICAST_STATE"
+
+[package.metadata.android.application]
+has_code = true
+label = "FastTran"
+icon = "@drawable/ic_launcher"
+theme = "@android:style/Theme.Material.NoActionBar"
+extract_native_libs = true
+uses_cleartext_traffic = true
+
+[[package.metadata.android.application.activity]]
+name = "io.fasttran.app.FastTranActivity"
+exported = true
+config_changes = "orientation|keyboardHidden|screenSize"
+window_soft_input_mode = "adjustResize"
+
+[[package.metadata.android.application.activity.meta_data]]
+name = "android.app.lib_name"
+value = "fasttran_core"
+
+[[package.metadata.android.application.activity.intent_filter]]
+actions = ["android.intent.action.MAIN"]
+categories = ["android.intent.category.LAUNCHER"]
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
+opt-level = 3
+strip = true

@@ -1,0 +1,10 @@
+/target/
+/dist/
+*.jks
+*.keystore
+/android/keystore/
+**/*.rs.bk
+*.pdb
+*.ilk
+.DS_Store
+Thumbs.db
